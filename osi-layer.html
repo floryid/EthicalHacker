@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSI Layer Model - Panduan Lengkap & Detail</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Navigation Menu */
+        .main-menu {
+            margin-top: 20px;
+        }
+
+        .main-menu ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 2px solid transparent;
+        }
+
+        .main-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        .osi-model-container {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .layer-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+            border-left: 5px solid;
+            position: relative;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .layer-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+
+        .layer-title {
+            flex: 1;
+        }
+
+        .layer-title h2 {
+            color: #667eea;
+            margin: 0 0 5px 0;
+            font-size: 1.5em;
+        }
+
+        .layer-type {
+            color: #999;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* Layer colors */
+        .layer-7 { border-left-color: #4CAF50; }
+        .layer-6 { border-left-color: #8BC34A; }
+        .layer-5 { border-left-color: #CDDC39; }
+        .layer-4 { border-left-color: #FFC107; }
+        .layer-3 { border-left-color: #FF9800; }
+        .layer-2 { border-left-color: #FF5722; }
+        .layer-1 { border-left-color: #F44336; }
+
+        .layer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .content-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .content-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .content-list li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .example-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .example-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 10px;
+        }
+
+        .example-item {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #FF9800;
+        }
+
+        .example-item h3 {
+            color: #FF9800;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .protocol-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .protocol-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .protocol-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .protocol-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .protocol-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .protocol-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin: 2px;
+        }
+
+        .model-diagram {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .diagram-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .osi-stack {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 2px;
+            min-width: 300px;
+        }
+
+        .stack-layer {
+            padding: 15px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+
+        .stack-7 { background: #4CAF50; }
+        .stack-6 { background: #8BC34A; }
+        .stack-5 { background: #CDDC39; color: #333; }
+        .stack-4 { background: #FFC107; color: #333; }
+        .stack-3 { background: #FF9800; }
+        .stack-2 { background: #FF5722; }
+        .stack-1 { background: #F44336; }
+
+        .comparison-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .comparison-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .comparison-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .comparison-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-card li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.95em;
+        }
+
+        .comparison-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .key-points {
+            background: #e1f5fe;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+        }
+
+        .key-points h3 {
+            color: #01579b;
+            margin-bottom: 15px;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-points li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #01579b;
+        }
+
+        .key-points li:before {
+            content: "★";
+            position: absolute;
+            left: 0;
+            color: #2196F3;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .layer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .diagram-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 OSI Layer Model</h1>
+            <p>Model Referensi Tujuh Lapis untuk Komunikasi Jaringan</p>
+            
+            <!-- Navigation Menu -->
+            <nav class="main-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="osi-layer.html">OSI Layer</a></li>
+                    <li><a href="tools-ethical-hacking.html">Tools</a></li>
+                    <li><a href="owasp-top10.html">OWASP Top 10</a></li>
+                    <li><a href="methodology.html">Methodology</a></li>
+                    <li><a href="network-security.html">Network Security</a></li>
+                    <li><a href="payloads-advanced.html">Advanced Payloads</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- OSI Model Diagram -->
+        <section class="model-diagram">
+            <h2>📊 Visualisasi OSI Model</h2>
+            <div class="diagram-content">
+                <div>
+                    <h3>Model Referensi OSI (7 Layer)</h3>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        Model OSI (Open Systems Interconnection) adalah kerangka kerja konseptual yang digunakan untuk memahami komunikasi jaringan melalui tujuh lapisan yang berbeda.
+                    </p>
+                </div>
+                <div class="osi-stack">
+                    <div class="stack-layer stack-7">Layer 7: Application</div>
+                    <div class="stack-layer stack-6">Layer 6: Presentation</div>
+                    <div class="stack-layer stack-5">Layer 5: Session</div>
+                    <div class="stack-layer stack-4">Layer 4: Transport</div>
+                    <div class="stack-layer stack-3">Layer 3: Network</div>
+                    <div class="stack-layer stack-2">Layer 2: Data Link</div>
+                    <div class="stack-layer stack-1">Layer 1: Physical</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OSI Layers Details -->
+        <section class="osi-model-container">
+            
+            <!-- Layer 7: Application -->
+            <div class="layer-card layer-7">
+                <div class="layer-header">
+                    <div class="layer-number">7</div>
+                    <div class="layer-title">
+                        <h2>Application Layer</h2>
+                        <p class="layer-type">Lapisan Aplikasi - Interface Pengguna</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>Menyediakan layanan jaringan langsung ke aplikasi pengguna</li>
+                            <li>Menangani autentikasi dan enkripsi</li>
+                            <li>Mengelola sumber daya jaringan</li>
+                            <li>Menyediakan antarmuka pengguna</li>
+                            <li>File sharing dan printing</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Protokol & Layanan</h3>
+                        <ul class="content-list">
+                            <li>HTTP/HTTPS - Web browsing</li>
+                            <li>FTP - File transfer</li>
+                            <li>SMTP/POP3 - Email</li>
+                            <li>DNS - Domain resolution</li>
+                            <li>Telnet - Remote login</li>
+                            <li>SSH - Secure shell</li>
+                            <li>SNMP - Network monitoring</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Contoh Aplikasi</h3>
+                        <ul class="content-list">
+                            <li>Web Browser (Chrome, Firefox)</li>
+                            <li>Email Client (Outlook, Gmail)</li>
+                            <li>FTP Client (FileZilla)</li>
+                            <li>Instant Messaging (WhatsApp)</li>
+                            <li>File Sharing (Google Drive)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 7</h3>
+                    <ul>
+                        <li>Satu-satunya layer yang berinteraksi langsung dengan pengguna</li>
+                        <li>Bertanggung jawab untuk user authentication</li>
+                        <li>Menyediakan aplikasi dan services kepada user</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Layer 6: Presentation -->
+            <div class="layer-card layer-6">
+                <div class="layer-header">
+                    <div class="layer-number">6</div>
+                    <div class="layer-title">
+                        <h2>Presentation Layer</h2>
+                        <p class="layer-type">Lapisan Presentasi - Translasi Data</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>Enkripsi dan dekripsi data</li>
+                            <li>Kompresi data</li>
+                            <li>Konversi format data</li>
+                            <li>Translasi bahasa jaringan</li>
+                            <li>Penyeragaman format data</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Protokol & Format</h3>
+                        <ul class="content-list">
+                            <li>SSL/TLS - Enkripsi</li>
+                            <li>JPEG, GIF, PNG - Gambar</li>
+                            <li>ASCII, EBCDIC - Text encoding</li>
+                            <li>MPEG, AVI - Video codec</li>
+                            <li>MIDI, MP3 - Audio codec</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Contoh Layanan</h3>
+                        <ul class="content-list">
+                            <li>Encryption (OpenSSL)</li>
+                            <li>Data compression (ZIP)</li>
+                            <li>Character encoding (UTF-8)</li>
+                            <li>Video streaming codec</li>
+                            <li>Image format conversion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 6</h3>
+                    <ul>
+                        <li>Sering disebut "Translator" dari OSI model</li>
+                        <li>Memastikan data dalam format yang dapat dibaca receiver</li>
+                        <li>Menangani encryption, compression, dan translation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Layer 5: Session -->
+            <div class="layer-card layer-5">
+                <div class="layer-header">
+                    <div class="layer-number">5</div>
+                    <div class="layer-title">
+                        <h2>Session Layer</h2>
+                        <p class="layer-type">Lapisan Sesi - Manajemen Koneksi</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>Membuat, memelihara, dan mengakhiri dialog</li>
+                            <li>Manajemen sesi komunikasi</li>
+                            <li>Sinkronisasi data exchange</li>
+                            <li>Dialog control (half-duplex/full-duplex)</li>
+                            <li>Pemulihan sesi</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Protokol & Layanan</h3>
+                        <ul class="content-list">
+                            <li>NetBIOS - Network BIOS</li>
+                            <li>NFS - Network File System</li>
+                            <li>SAP - Session Announcement</li>
+                            <li>X.225 - ISO Session</li>
+                            <li>SOCKS - Secure socket</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Contoh Aplikasi</h3>
+                        <ul class="content-list">
+                            <li>Video Conference (Zoom)</li>
+                            <li>Remote session (RDP)</li>
+                            <li>Database sessions</li>
+                            <li>Terminal emulation</li>
+                            <li>VoIP sessions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 5</h3>
+                    <ul>
+                        <li>Bertanggung jawab untuk session setup, maintenance, dan termination</li>
+                        <li>Memberikan dialog control mekanisme</li>
+                        <li>Memungkinkan seamless communication antara devices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Layer 4: Transport -->
+            <div class="layer-card layer-4">
+                <div class="layer-header">
+                    <div class="layer-number">4</div>
+                    <div class="layer-title">
+                        <h2>Transport Layer</h2>
+                        <p class="layer-type">Lapisan Transportasi - Pengiriman Data</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>End-to-end delivery pengiriman data</li>
+                            <li>Kontrol aliran data (Flow Control)</li>
+                            <li>Error handling dan recovery</li>
+                            <li>Multiplexing/Demultiplexing</li>
+                            <li>Port management</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Protokol Utama</h3>
+                        <ul class="content-list">
+                            <li>TCP - Reliable, connection-oriented</li>
+                            <li>UDP - Unreliable, connectionless</li>
+                            <li>SCTP - Stream control</li>
+                            <li>DCCP - Datagram congestion</li>
+                            <li>QUIC - UDP-based modern protocol</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Port Contoh</h3>
+                        <ul class="content-list">
+                            <li>Port 80 - HTTP</li>
+                            <li>Port 443 - HTTPS</li>
+                            <li>Port 22 - SSH</li>
+                            <li>Port 25 - SMTP</li>
+                            <li>Port 53 - DNS</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 4</h3>
+                    <ul>
+                        <li>Pertama layer yang menyediakan end-to-end delivery</li>
+                        <li>TCP dan UDP adalah protokol utama di layer ini</li>
+                        <li>Menangani flow control dan error detection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Layer 3: Network -->
+            <div class="layer-card layer-3">
+                <div class="layer-header">
+                    <div class="layer-number">3</div>
+                    <div class="layer-title">
+                        <h2>Network Layer</h2>
+                        <p class="layer-type">Lapisan Jaringan - Routing</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>Routing packet ke destinasi</li>
+                            <li>IP addressing dan subnetting</li>
+                            <li>Logical addressing</li>
+                            <li>Path determination</li>
+                            <li>Packet forwarding</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Protokol Utama</h3>
+                        <ul class="content-list">
+                            <li>IP (IPv4, IPv6)</li>
+                            <li>ICMP - Internet Control Message</li>
+                            <li>IGMP - Internet Group Management</li>
+                            <li>IPsec - IP Security</li>
+                            <li>Routing (RIP, OSPF, BGP)</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Perangkat Network</h3>
+                        <ul class="content-list">
+                            <li>Router - Routing traffic</li>
+                            <li>Firewall - Filtering packet</li>
+                            <li>Layer 3 Switch</li>
+                            <li>IP gateway</li>
+                            <li>Proxy server</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 3</h3>
+                    <ul>
+                        <li>Bertanggung jawab untuk routing dan forwarding</li>
+                        <li>Menggunakan IP address untuk logical addressing</li>
+                        <li>Router adalah perangkat utama di layer ini</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Layer 2: Data Link -->
+            <div class="layer-card layer-2">
+                <div class="layer-header">
+                    <div class="layer-number">2</div>
+                    <div class="layer-title">
+                        <h2>Data Link Layer</h2>
+                        <p class="layer-type">Lapisan Penghubung Data - MAC Address</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>MAC addressing (Physical addressing)</li>
+                            <li>Frame creation dan framing</li>
+                            <li>Error detection</li>
+                            <li>Physical link management</li>
+                            <li>Switch operation</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Protokol Utama</h3>
+                        <ul class="content-list">
+                            <li>Ethernet - LAN standard</li>
+                            <li>PPP - Point-to-Point</li>
+                            <li>Frame Relay</li>
+                            <li>WiFi (802.11)</li>
+                            <li>ARP - Address Resolution</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Perangkat Network</h3>
+                        <ul class="content-list">
+                            <li>Switch - Frame forwarding</li>
+                            <li>Bridge - Segment network</li>
+                            <li>Network Interface Card</li>
+                            <li>Access Point (WiFi)</li>
+                            <li>Repeater/Hub (L1)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 2</h3>
+                    <ul>
+                        <li>Menggunakan MAC address untuk physical addressing</li>
+                        <li>Switch adalah perangkat utama di layer ini</li>
+                        <li>Menangani frame organization dan error detection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Layer 1: Physical -->
+            <div class="layer-card layer-1">
+                <div class="layer-header">
+                    <div class="layer-number">1</div>
+                    <div class="layer-title">
+                        <h2>Physical Layer</h2>
+                        <p class="layer-type">Lapisan Fisik - Hardware & Media</p>
+                    </div>
+                </div>
+
+                <div class="layer-content">
+                    <div class="content-section">
+                        <h3>🎯 Fungsi Utama</h3>
+                        <ul class="content-list">
+                            <li>Transmisi raw bit stream</li>
+                            <li>Definisi media transmisi</li>
+                            <li>Electrical/optical signals</li>
+                            <li>Physical topology</li>
+                            <li>Connectors dan cables</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>📋 Media & Standard</h3>
+                        <ul class="content-list">
+                            <li>Copper (Twisted pair, Coaxial)</li>
+                            <li>Fiber Optic</li>
+                            <li>Wireless (RF, Microwave)</li>
+                            <li>USB, Serial, Parallel</li>
+                            <li>X.25, V.24 standards</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>💻 Perangkat & Komponen</h3>
+                        <ul class="content-list">
+                            <li>Network Interface Card (NIC)</li>
+                            <li>Hub - Signal regeneration</li>
+                            <li>Repeater - Signal amplification</li>
+                            <li>Cables - RJ45, Fiber, Coax</li>
+                            <li>Modems - Signal conversion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>Poin Penting Layer 1</h3>
+                    <ul>
+                        <li>Paling bawah layer dalam OSI model</li>
+                        <li>Menangani electrical dan mechanical aspects</li>
+                        <li>Hub dan Repeater adalah perangkat utama</li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Protocols by Layer -->
+        <section class="example-section">
+            <h2>🔗 Protokol Lengkap Setiap Layer</h2>
+            
+            <table class="protocol-table">
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Layer Name</th>
+                        <th>Protokol Utama</th>
+                        <th>Perangkat</th>
+                        <th>Unit Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>7</strong></td>
+                        <td>Application</td>
+                        <td>HTTP, HTTPS, FTP, SMTP, DNS, SSH, SNMP, Telnet</td>
+                        <td>Gateway, Firewall</td>
+                        <td>Data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>Presentation</td>
+                        <td>SSL/TLS, JPEG, MPEG, MIDI, ASCII</td>
+                        <td>Gateway</td>
+                        <td>Data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Session</td>
+                        <td>NetBIOS, NFS, RPC, SOCKS</td>
+                        <td>Gateway</td>
+                        <td>Data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Transport</td>
+                        <td>TCP, UDP, SCTP, DCCP, QUIC</td>
+                        <td>Firewall, Gateway</td>
+                        <td>Segment/Datagram</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Network</td>
+                        <td>IP, ICMP, IGMP, IPsec, OSPF, BGP, RIP</td>
+                        <td>Router, L3 Switch</td>
+                        <td>Packet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>Data Link</td>
+                        <td>Ethernet, PPP, WiFi, ARP, Frame Relay</td>
+                        <td>Switch, Bridge</td>
+                        <td>Frame</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Physical</td>
+                        <td>RJ45, Fiber, USB, Modem, Hub</td>
+                        <td>Hub, Repeater</td>
+                        <td>Bit</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Practical Examples -->
+        <section class="example-section">
+            <h2>💡 Contoh Praktis Komunikasi OSI Layer</h2>
+
+            <div class="example-item">
+                <h3>Contoh 1: Membuka Website Google.com</h3>
+                <p><strong>Skenario:</strong> User membuka browser dan akses google.com</p>
+                
+                <h4 style="margin-top: 15px; color: #667eea;">Proses Layer-by-Layer:</h4>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Layer 7 (Application):</strong> Browser (Chrome/Firefox) menginterpretasi URL google.com dan membuat HTTP request</li>
+                    <li><strong>Layer 6 (Presentation):</strong> Data dienkripsi dengan HTTPS/SSL dan diformat dalam bentuk yang sesuai</li>
+                    <li><strong>Layer 5 (Session):</strong> Session diinisialisasi antara client dan server Google</li>
+                    <li><strong>Layer 4 (Transport):</strong> TCP membuat koneksi reliable ke server (port 443 untuk HTTPS)</li>
+                    <li><strong>Layer 3 (Network):</strong> IP routing menentukan path ke server Google menggunakan IP address</li>
+                    <li><strong>Layer 2 (Data Link):</strong> Ethernet frames dibuat dengan MAC address gateway/router</li>
+                    <li><strong>Layer 1 (Physical):</strong> Data dikirim dalam bentuk electrical signals melalui kabel atau WiFi</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Contoh 2: Mengirim Email</h3>
+                <p><strong>Skenario:</strong> User mengirim email melalui Gmail</p>
+                
+                <h4 style="margin-top: 15px; color: #667eea;">Proses:</h4>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Layer 7:</strong> Gmail interface → User compose email</li>
+                    <li><strong>Layer 6:</strong> Email content dikompres dan dienkripsi</li>
+                    <li><strong>Layer 5:</strong> SMTP session dibuat ke mail server</li>
+                    <li><strong>Layer 4:</strong> TCP port 587 (SMTP) digunakan untuk reliable delivery</li>
+                    <li><strong>Layer 3:</strong> IP packet diformat untuk routing ke mail server</li>
+                    <li><strong>Layer 2:</strong> MAC address ditambahkan di frame header</li>
+                    <li><strong>Layer 1:</strong> Email dikirim via kabel/WiFi dalam bentuk bits</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Contoh 3: Video Streaming (YouTube)</h3>
+                <p><strong>Skenario:</strong> Menonton video di YouTube</p>
+                
+                <h4 style="margin-top: 15px; color: #667eea;">Proses:</h4>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Layer 7:</strong> YouTube app/website menampilkan video player</li>
+                    <li><strong>Layer 6:</strong> Video stream diformat (H.264, H.265, VP9) dan dikompres</li>
+                    <li><strong>Layer 5:</strong> RTP (Real-time Transport Protocol) session dibuat</li>
+                    <li><strong>Layer 4:</strong> UDP digunakan untuk faster delivery daripada TCP</li>
+                    <li><strong>Layer 3:</strong> IP routing mengirim packets dari YouTube server</li>
+                    <li><strong>Layer 2:</strong> Ethernet frames dengan MAC address</li>
+                    <li><strong>Layer 1:</strong> Video bits ditransmisikan melalui network media</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Contoh 4: Online Gaming</h3>
+                <p><strong>Skenario:</strong> Bermain game online multiplayer</p>
+                
+                <h4 style="margin-top: 15px; color: #667eea;">Proses:</h4>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Layer 7:</strong> Game client & server berinteraksi untuk game logic</li>
+                    <li><strong>Layer 6:</strong> Game data dikompres dan dienkripsi untuk security</li>
+                    <li><strong>Layer 5:</strong> Game session dipertahankan selama gameplay</li>
+                    <li><strong>Layer 4:</strong> TCP untuk important data, UDP untuk real-time gameplay data</li>
+                    <li><strong>Layer 3:</strong> IP routing untuk low latency path</li>
+                    <li><strong>Layer 2:</strong> MAC addressing untuk local network segment</li>
+                    <li><strong>Layer 1:</strong> Kecepatan tinggi transmission untuk minimal latency</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Data Encapsulation -->
+        <section class="example-section">
+            <h2>📦 Enkapsulasi Data di Setiap Layer</h2>
+            
+            <p style="color: #666; margin-bottom: 20px;">
+                Ketika data bergerak down dari Layer 7 ke Layer 1, setiap layer menambahkan header-nya sendiri. Proses ini disebut enkapsulasi:
+            </p>
+
+            <div class="example-item">
+                <h3>Proses Enkapsulasi (Down the Stack)</h3>
+                <div class="code-block">
+Layer 7 (Application): [HTTP Data]
+                ↓
+Layer 6 (Presentation): [Presentation Header | HTTP Data]
+                ↓
+Layer 5 (Session): [Session Header | Presentation Header | HTTP Data]
+                ↓
+Layer 4 (Transport): [TCP Header | Session Header | HTTP Data] = SEGMENT
+                ↓
+Layer 3 (Network): [IP Header | TCP Header | Session Header | HTTP Data] = PACKET
+                ↓
+Layer 2 (Data Link): [MAC Header | IP Header | TCP Header | HTTP Data | MAC Trailer] = FRAME
+                ↓
+Layer 1 (Physical): Bits dikirim melalui kabel/wireless medium
+                </div>
+            </div>
+
+            <div class="example-item">
+                <h3>Proses De-enkapsulasi (Up the Stack)</h3>
+                <p style="color: #666;">Ketika data diterima, setiap layer melepas headernya (de-encapsulation):</p>
+                <div class="code-block">
+Layer 1 (Physical): Bits diterima dan dikonversi
+                ↑
+Layer 2 (Data Link): MAC Header diperiksa dan dihapus → FRAME
+                ↑
+Layer 3 (Network): IP Header diperiksa dan dihapus → PACKET
+                ↑
+Layer 4 (Transport): TCP Header diperiksa dan dihapus → SEGMENT
+                ↑
+Layer 5 (Session): Session Header dihapus
+                ↑
+Layer 6 (Presentation): Presentation Header dihapus dan data di-decode
+                ↑
+Layer 7 (Application): Original HTTP Data siap digunakan oleh aplikasi
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison: TCP/IP vs OSI -->
+        <section class="comparison-section">
+            <h2>⚖️ Perbandingan: OSI Model vs TCP/IP Model</h2>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3>📊 OSI Model</h3>
+                    <ul>
+                        <li>7 Layer</li>
+                        <li>Lebih teoritis</li>
+                        <li>Dikembangkan oleh ISO</li>
+                        <li>Layer 1-5 untuk network</li>
+                        <li>Layer 6-7 untuk application</li>
+                        <li>Lebih detail dan comprehensive</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h3>🌐 TCP/IP Model</h3>
+                    <ul>
+                        <li>4-5 Layer</li>
+                        <li>Lebih praktis</li>
+                        <li>Dikembangkan oleh DoD</li>
+                        <li>Layer 1-3 untuk network</li>
+                        <li>Layer 4 untuk application</li>
+                        <li>Lebih sederhana dan efficient</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px; color: #667eea;">Mapping OSI ke TCP/IP:</h3>
+            <table class="protocol-table">
+                <thead>
+                    <tr>
+                        <th>TCP/IP Layer</th>
+                        <th>OSI Layers</th>
+                        <th>Fungsi Utama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Application</strong></td>
+                        <td>7, 6, 5</td>
+                        <td>User services & communication protocols</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transport</strong></td>
+                        <td>4</td>
+                        <td>End-to-end communication & reliability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Internet</strong></td>
+                        <td>3</td>
+                        <td>Routing & logical addressing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Link</strong></td>
+                        <td>2, 1</td>
+                        <td>Physical transmission & MAC addressing</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Security in OSI -->
+        <section class="example-section">
+            <h2>🔒 Security Considerations di Setiap Layer</h2>
+
+            <div class="example-item">
+                <h3>Layer 1 (Physical) Security</h3>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Threats:</strong> Cable tapping, signal interception, physical damage</li>
+                    <li><strong>Mitigation:</strong> Fiber optic cables, secure data centers, access control</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Layer 2 (Data Link) Security</h3>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Threats:</strong> MAC spoofing, ARP spoofing, switch port security</li>
+                    <li><strong>Mitigation:</strong> Port security, DHCP snooping, ARP inspection</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Layer 3 (Network) Security</h3>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Threats:</strong> IP spoofing, DoS attacks, route hijacking</li>
+                    <li><strong>Mitigation:</strong> Firewall, IPsec, ingress/egress filtering</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Layer 4 (Transport) Security</h3>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Threats:</strong> TCP/UDP port scanning, session hijacking</li>
+                    <li><strong>Mitigation:</strong> Stateful firewall, intrusion detection, DPI</li>
+                </ul>
+            </div>
+
+            <div class="example-item">
+                <h3>Layer 5-7 (Upper Layers) Security</h3>
+                <ul style="margin: 10px 0; margin-left: 20px; color: #666;">
+                    <li><strong>Threats:</strong> SQL injection, XSS, authentication bypass, malware</li>
+                    <li><strong>Mitigation:</strong> WAF, input validation, encryption, secure coding</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Key Concepts -->
+        <section class="example-section">
+            <h2>🎓 Konsep Penting OSI Model</h2>
+
+            <div class="key-points">
+                <h3>Fundamental Principles:</h3>
+                <ul>
+                    <li><strong>Layering:</strong> Setiap layer menyediakan services ke layer di atasnya</li>
+                    <li><strong>Abstraction:</strong> Layer bawah menyembunyikan kompleksitas dari layer atas</li>
+                    <li><strong>Encapsulation:</strong> Data dibungkus dengan header di setiap layer</li>
+                    <li><strong>Separation of Concerns:</strong> Setiap layer punya tanggung jawab spesifik</li>
+                    <li><strong>Standardization:</strong> Memungkinkan interoperability antar devices</li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top: 30px; color: #667eea;">Mnemonics untuk Mengingat OSI Layers:</h3>
+            <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #FF9800;">
+                <p style="color: #e65100; font-weight: bold; margin-bottom: 10px;">
+                    "Please Do Not Throw Sausage Pizza Away"
+                </p>
+                <ul style="margin-left: 20px; color: #666;">
+                    <li><strong>P</strong>hysical (Layer 1)</li>
+                    <li><strong>D</strong>ata Link (Layer 2)</li>
+                    <li><strong>N</strong>etwork (Layer 3)</li>
+                    <li><strong>T</strong>ransport (Layer 4)</li>
+                    <li><strong>S</strong>ession (Layer 5)</li>
+                    <li><strong>P</strong>resentation (Layer 6)</li>
+                    <li><strong>A</strong>pplication (Layer 7)</li>
+                </ul>
+            </div>
+
+            <div class="key-points">
+                <h3>Data Units di Setiap Layer:</h3>
+                <ul>
+                    <li><strong>Layer 1:</strong> Bit</li>
+                    <li><strong>Layer 2:</strong> Frame</li>
+                    <li><strong>Layer 3:</strong> Packet</li>
+                    <li><strong>Layer 4:</strong> Segment (TCP) / Datagram (UDP)</li>
+                    <li><strong>Layer 5-7:</strong> Data/Message</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section class="example-section">
+            <h2>📚 Resources dan Referensi</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3>Online Learning</h3>
+                    <ul>
+                        <li>Cisco Learning Network</li>
+                        <li>CompTIA Network+</li>
+                        <li>Prof Messer (YouTube)</li>
+                        <li>Coursera - Networking Courses</li>
+                        <li>Udemy - Network Fundamentals</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h3>Books & Documentation</h3>
+                    <ul>
+                        <li>"Computer Networking" - Kurose & Ross</li>
+                        <li>"TCP/IP Illustrated" - Richard Stevens</li>
+                        <li>ISO 7498 (OSI Reference Model)</li>
+                        <li>RFC documents (IETF)</li>
+                        <li>Cisco Documentation</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h3>Praktik & Tools</h3>
+                    <ul>
+                        <li>Wireshark - Packet analysis</li>
+                        <li>Cisco Packet Tracer</li>
+                        <li>GNS3 - Network emulation</li>
+                        <li>Tcpdump - Packet capturing</li>
+                        <li>Nmap - Network scanning</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Ethical Hacker Roadmap | OSI Layer Complete Guide</p>
+            <p><a href="index.html" style="color: white; text-decoration: underline;">← Kembali ke Home</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scroll untuk navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Copy code block functionality
+        document.querySelectorAll('.code-block').forEach(block => {
+            const button = document.createElement('button');
+            button.textContent = 'Copy';
+            button.style.cssText = 'position: absolute; top: 5px; right: 5px; padding: 5px 10px; background: #667eea; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 0.8em;';
+            block.style.position = 'relative';
+            block.appendChild(button);
+            
+            button.addEventListener('click', function() {
+                const code = block.querySelector('code') || block;
+                navigator.clipboard.writeText(code.textContent);
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = 'Copy', 2000);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetration Testing Methodology - Panduan Lengkap</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.6; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 40px; animation: slideDown 0.6s ease-out; }
+        header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .main-menu { margin-top: 20px; }
+        .main-menu ul { list-style: none; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .main-menu a { color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; font-weight: 500; border: 2px solid transparent; }
+        .main-menu a:hover { background: rgba(255, 255, 255, 0.2); border-color: white; transform: translateY(-2px); }
+        .section { background: white; border-radius: 10px; padding: 25px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeIn 0.6s ease-out; }
+        .section h2 { color: #667eea; margin-bottom: 20px; border-bottom: 3px solid #764ba2; padding-bottom: 10px; }
+        .phase-card { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #FF9800; }
+        .phase-card h3 { color: #667eea; margin-bottom: 15px; font-size: 1.2em; }
+        .phase-list { list-style: none; margin: 15px 0; }
+        .phase-list li { padding: 10px 0; padding-left: 25px; position: relative; color: #666; }
+        .phase-list li:before { content: "▸"; position: absolute; left: 0; color: #4CAF50; font-weight: bold; }
+        .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .comparison-card { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea; }
+        .comparison-card h4 { color: #667eea; margin-bottom: 15px; font-weight: bold; }
+        .comparison-card ul { list-style: none; padding: 0; }
+        .comparison-card li { padding: 8px 0; padding-left: 20px; position: relative; color: #666; font-size: 0.9em; }
+        .comparison-card li:before { content: "✓"; position: absolute; left: 0; color: #4CAF50; font-weight: bold; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        footer { text-align: center; color: white; margin-top: 40px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.3); }
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline-item { margin: 30px 0; padding: 20px; background: white; border-radius: 8px; border-left: 4px solid #667eea; position: relative; }
+        .timeline-item h3 { color: #667eea; margin-bottom: 10px; }
+        .timeline-item p { color: #666; font-size: 0.95em; line-height: 1.6; }
+        .key-features { background: #e1f5fe; padding: 20px; border-radius: 8px; border-left: 4px solid #2196F3; margin: 20px 0; }
+        .key-features h4 { color: #01579b; margin-bottom: 15px; }
+        .key-features ul { list-style: none; padding: 0; }
+        .key-features li { padding: 8px 0; padding-left: 20px; position: relative; color: #01579b; }
+        .key-features li:before { content: "★"; position: absolute; left: 0; color: #2196F3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Penetration Testing Methodology</h1>
+            <p>Panduan Lengkap Melakukan Penetration Testing Profesional</p>
+            <nav class="main-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="methodology.html">Methodology</a></li>
+                    <li><a href="owasp-top10.html">OWASP Top 10</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- OVERVIEW -->
+        <section class="section">
+            <h2>📋 Penetration Testing Phases</h2>
+            <p style="color: #666; margin-bottom: 20px;">Penetration testing adalah proses sistematis untuk mengidentifikasi dan exploit vulnerabilities dalam sistem dengan izin. Terdiri dari 5-7 phases utama tergantung metodologi yang digunakan.</p>
+        </section>
+
+        <!-- PHASE 1: RECONNAISSANCE -->
+        <section class="section">
+            <h2>Phase 1: Reconnaissance (Recon)</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>🔎 Passive Information Gathering</h3>
+                    <p>Mengumpulkan informasi tanpa direct contact dengan target:</p>
+                    <div class="phase-list">
+                        <li>WHOIS lookup untuk domain information</li>
+                        <li>Google dorking untuk exposedfiles/pages</li>
+                        <li>Shodan untuk publicly accessible devices</li>
+                        <li>LinkedIn untuk employee enumeration</li>
+                        <li>Archive.org (Wayback Machine) untuk historical data</li>
+                        <li>DNS enumeration dengan dig/nslookup</li>
+                        <li>Social engineering recon (phone calls, emails)</li>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>🔍 Active Enumeration</h3>
+                    <p>Directly probing target untuk gather intelligence:</p>
+                    <div class="phase-list">
+                        <li>Port scanning (Nmap)</li>
+                        <li>Service version detection</li>
+                        <li>Subdomain enumeration</li>
+                        <li>Web application fingerprinting</li>
+                        <li>Network topology mapping</li>
+                        <li>Firewall/WAF detection</li>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-features">
+                <h4>Recon Tools:</h4>
+                <ul>
+                    <li>Nmap - Port scanning</li>
+                    <li>TheHarvester - Email/subdomain gathering</li>
+                    <li>Shodan - Internet-wide scanning</li>
+                    <li>whois/dig - DNS information</li>
+                    <li>Metasploit - Information gathering modules</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PHASE 2: SCANNING & ENUMERATION -->
+        <section class="section">
+            <h2>Phase 2: Scanning & Enumeration</h2>
+            <div class="phase-card">
+                <h3>Network Scanning</h3>
+                <p>Mengidentifikasi hosts, ports, dan services yang aktif:</p>
+                <div class="phase-list">
+                    <li><strong>Port Scanning:</strong> TCP/UDP ports (Nmap -p-, -sV)</li>
+                    <li><strong>OS Fingerprinting:</strong> Determine OS type dan version</li>
+                    <li><strong>Service Enumeration:</strong> Aplikasi apa yang berjalan, versi berapa</li>
+                    <li><strong>Vulnerability Scanning:</strong> Gunakan Nessus/OpenVAS untuk automated scanning</li>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h3>Web Application Scanning</h3>
+                <p>Deep dive into web technologies:</p>
+                <div class="phase-list">
+                    <li>Web server enumeration (Apache, IIS, Nginx)</li>
+                    <li>Web application firewall (WAF) detection</li>
+                    <li>Directory/file enumeration (Gobuster, dirbuster)</li>
+                    <li>Parameter discovery</li>
+                    <li>Technology stack identification</li>
+                    <li>CMS/Framework detection</li>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHASE 3: VULNERABILITY ASSESSMENT -->
+        <section class="section">
+            <h2>Phase 3: Vulnerability Assessment</h2>
+            <div class="phase-card">
+                <h3>Vulnerability Identification</h3>
+                <p>Mengidentifikasi semua potential vulnerabilities dari scan results:</p>
+                <div class="phase-list">
+                    <li>Analyze scan results dari automated tools</li>
+                    <li>Manual testing untuk logic flaws</li>
+                    <li>Business logic vulnerabilities</li>
+                    <li>Configuration weaknesses</li>
+                    <li>Unpatched systems dan outdated software</li>
+                    <li>Default credentials</li>
+                    <li>Weak encryption</li>
+                </div>
+            </div>
+
+            <div class="key-features">
+                <h4>Vulnerability Scoring:</h4>
+                <ul>
+                    <li>CVSS (Common Vulnerability Scoring System)</li>
+                    <li>CVSS v3.1 adalah standard saat ini</li>
+                    <li>Score 0-10 (0=None, 10=Critical)</li>
+                    <li>Pertimbangkan impact terhadap bisnis</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PHASE 4: EXPLOITATION -->
+        <section class="section">
+            <h2>Phase 4: Exploitation</h2>
+            <div class="phase-card">
+                <h3>Exploiting Vulnerabilities</h3>
+                <p>Membuktikan vulnerabilities dengan actual exploitation:</p>
+                <div class="phase-list">
+                    <li>Proof of Concept (PoC) untuk setiap vulnerability</li>
+                    <li>Gunakan Metasploit, custom scripts, atau manual exploitation</li>
+                    <li>Dokumentasi setiap successful exploit</li>
+                    <li>Hindari causing damage atau system downtime</li>
+                    <li>Stay within scope of engagement</li>
+                    <li>Focus pada high-risk vulnerabilities first</li>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h3>Post-Exploitation</h3>
+                <p>Setelah initial access, perform deeper exploration:</p>
+                <div class="phase-list">
+                    <li>Privilege escalation (obtain higher privileges)</li>
+                    <li>Persistence (maintain access untuk future testing)</li>
+                    <li>Lateral movement (access other systems)</li>
+                    <li>Data exfiltration (retrieve sensitive data)</li>
+                    <li>Credential harvesting</li>
+                    <li>Covering tracks (cleanup logs)</li>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHASE 5: REPORTING -->
+        <section class="section">
+            <h2>Phase 5: Reporting & Remediation</h2>
+            <div class="phase-card">
+                <h3>Comprehensive Report</h3>
+                <p>Detail findings dalam professional report:</p>
+                <div class="phase-list">
+                    <li><strong>Executive Summary:</strong> High-level overview untuk management</li>
+                    <li><strong>Methodology:</strong> Tools & techniques yang digunakan</li>
+                    <li><strong>Vulnerability Details:</strong> Setiap finding dengan PoC</li>
+                    <li><strong>Business Impact:</strong> Risk assessment terhadap bisnis</li>
+                    <li><strong>Remediation Recommendations:</strong> How to fix setiap issue</li>
+                    <li><strong>Timeline:</strong> Kapan vulnerabilities harus diperbaiki</li>
+                    <li><strong>Appendix:</strong> Technical details, screenshots, scan results</li>
+                </div>
+            </div>
+
+            <div class="key-features">
+                <h4>Report Structure:</h4>
+                <ul>
+                    <li>Clear, professional language (tidak technical jargon untuk executives)</li>
+                    <li>Screenshots & PoC code</li>
+                    <li>CVSS scores & risk ratings</li>
+                    <li>Detailed remediation steps</li>
+                    <li>Prioritized by risk</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- METHODOLOGIES COMPARISON -->
+        <section class="section">
+            <h2>🔀 Popular Methodologies</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>OWASP Testing Guide</h4>
+                    <ul>
+                        <li>Fokus pada web applications</li>
+                        <li>Manual testing approach</li>
+                        <li>Comprehensive checklist</li>
+                        <li>Best untuk web pentesting</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>NIST SP 800-115</h4>
+                    <ul>
+                        <li>US government standard</li>
+                        <li>Technical security testing</li>
+                        <li>Detailed procedures</li>
+                        <li>Compliance-focused</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>PTES (Penetration Test Execution Standard)</h4>
+                    <ul>
+                        <li>Industry-standard framework</li>
+                        <li>7 detailed phases</li>
+                        <li>Community-driven</li>
+                        <li>Comprehensive coverage</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>OSINT Framework</h4>
+                    <ul>
+                        <li>Open source intelligence gathering</li>
+                        <li>Reconnaissance focused</li>
+                        <li>Public data collection</li>
+                        <li>Legal & ethical emphasis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- BEST PRACTICES -->
+        <section class="section">
+            <h2>✅ Best Practices & Ethical Guidelines</h2>
+            
+            <div class="phase-card">
+                <h3>📜 Legal & Compliance</h3>
+                <div class="phase-list">
+                    <li><strong>Rules of Engagement (RoE):</strong> Written agreement sebelum testing</li>
+                    <li><strong>Scope Definition:</strong> Jelas target systems & testing windows</li>
+                    <li><strong>Authorization:</strong> Signed permission dari authorized personnel</li>
+                    <li><strong>NDA:</strong> Non-disclosure agreement untuk hasil findings</li>
+                    <li><strong>Compliance:</strong> Follow applicable laws & regulations</li>
+                    <li><strong>Data Protection:</strong> Secure handling of sensitive data</li>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <h3>🎯 Technical Best Practices</h3>
+                <div class="phase-list">
+                    <li><strong>Backup Systems:</strong> Backup sebelum testing critical systems</li>
+                    <li><strong>Time Windows:</strong> Testing hanya dalam agreed-upon windows</li>
+                    <li><strong>No Disruption:</strong> Avoid causing system outages/data loss</li>
+                    <li><strong>Clean Up:</strong> Remove test artifacts & reverse changes</li>
+                    <li><strong>Documentation:</strong> Document semua activities & findings</li>
+                    <li><strong>Escalation Procedures:</strong> Know when to stop & report issues</li>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Ethical Hacker Roadmap | Penetration Testing Methodology</p>
+            <p><a href="index.html" style="color: white; text-decoration: underline;">← Back to Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

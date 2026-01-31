@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWASP Top 10 Vulnerabilities - Panduan Lengkap</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.6; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 40px; animation: slideDown 0.6s ease-out; }
+        header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .main-menu { margin-top: 20px; }
+        .main-menu ul { list-style: none; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .main-menu a { color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; font-weight: 500; border: 2px solid transparent; }
+        .main-menu a:hover { background: rgba(255, 255, 255, 0.2); border-color: white; transform: translateY(-2px); }
+        .section { background: white; border-radius: 10px; padding: 25px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeIn 0.6s ease-out; }
+        .section h2 { color: #667eea; margin-bottom: 20px; border-bottom: 3px solid #764ba2; padding-bottom: 10px; }
+        .vuln-card { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #FF9800; }
+        .vuln-card h3 { color: #667eea; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #00ff00; padding: 15px; border-radius: 5px; margin: 15px 0; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.85em; line-height: 1.5; border-left: 3px solid #4CAF50; position: relative; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: #667eea; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 0.8em; transition: all 0.3s ease; }
+        .copy-btn:hover { background: #764ba2; }
+        .explanation { background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 3px solid #4CAF50; color: #2e7d32; font-size: 0.95em; }
+        .warning { background: #fff3e0; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 3px solid #FF9800; color: #e65100; font-size: 0.95em; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        footer { text-align: center; color: white; margin-top: 40px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.3); }
+        .vuln-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .vuln-item { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea; }
+        .vuln-item h4 { color: #667eea; margin-bottom: 10px; }
+        .vuln-item p { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔒 OWASP Top 10 Vulnerabilities</h1>
+            <p>Panduan Lengkap 10 Kerentanan Web Paling Kritis</p>
+            <nav class="main-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="osi-layer.html">OSI Layer</a></li>
+                    <li><a href="tools-ethical-hacking.html">Tools</a></li>
+                    <li><a href="owasp-top10.html">OWASP Top 10</a></li>
+                    <li><a href="methodology.html">Methodology</a></li>
+                    <li><a href="network-security.html">Network Security</a></li>
+                    <li><a href="payloads-advanced.html">Advanced Payloads</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- OWASP 2021 Top 10 -->
+        <section class="section">
+            <h2>📋 OWASP Top 10 2021</h2>
+            <div class="vuln-list">
+                <div class="vuln-item">
+                    <h4>1. Broken Access Control</h4>
+                    <p>Users dapat access resources/functions yang tidak seharusnya mereka akses</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>2. Cryptographic Failures</h4>
+                    <p>Kegagalan dalam protecting data-in-transit & at-rest dengan enkripsi</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>3. Injection</h4>
+                    <p>SQL Injection, Command Injection, LDAP Injection</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>4. Insecure Design</h4>
+                    <p>Missing security controls dalam design phase</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>5. Security Misconfiguration</h4>
+                    <p>Default credentials, unnecessary features enabled, outdated software</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>6. Vulnerable Components</h4>
+                    <p>Using libraries/frameworks dengan known vulnerabilities</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>7. Authentication Failures</h4>
+                    <p>Weak password policies, credential exposure, session management flaws</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>8. Software & Data Integrity Failures</h4>
+                    <p>Insecure CI/CD, unsigned updates, insecure deserialization</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>9. Logging & Monitoring Failures</h4>
+                    <p>Insufficient logging, missing alerts untuk security events</p>
+                </div>
+                <div class="vuln-item">
+                    <h4>10. SSRF (Server-Side Request Forgery)</h4>
+                    <p>Server dapat membuat request ke internal resources</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DETAILED EXPLANATIONS -->
+        <section class="section">
+            <h2>🎯 Top 3 Vulnerabilities - Penjelasan Detail</h2>
+
+            <div class="vuln-card">
+                <h3>1️⃣ Broken Access Control</h3>
+                <p><strong>Deskripsi:</strong> Users dapat bypass authorization checks dan access data/functions yang restricted.</p>
+                <div class="code-block">
+                    <button class="copy-btn">Copy</button>
+                    <code>// Vulnerable: Direct Object Reference
+GET /api/users/123  -> Returns user profile dengan ID 123
+Attacker coba: GET /api/users/456  -> Access user lain!
+
+// Vulnerable: URL-based authorization
+http://example.com/admin/panel  -> Tidak check apakah user adalah admin
+http://example.com/edit?id=999  -> Edit data user lain
+
+// Vulnerable: Missing access checks
+function deletePost(postId) {
+    Post.findByIdAndDelete(postId);  // Tidak check apakah user owns post!
+}</code>
+                </div>
+                <div class="explanation">
+                    <strong>Testing Techniques:</strong>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Change user ID/reference di URL/request body</li>
+                        <li>Test setiap fungsi tanpa login</li>
+                        <li>Try access admin endpoints sebagai user biasa</li>
+                        <li>Check horizontal privilege escalation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="vuln-card">
+                <h3>2️⃣ Cryptographic Failures</h3>
+                <p><strong>Deskripsi:</strong> Sensitiveddata tidak diprotect dengan proper encryption atau menggunakan weak cryptography.</p>
+                <div class="code-block">
+                    <button class="copy-btn">Copy</button>
+                    <code>// ❌ VULNERABLE: Storing passwords in plaintext
+password = "mypassword123"
+database.save(password)  
+
+// ❌ VULNERABLE: Using MD5 (broken hash)
+import hashlib
+password_hash = hashlib.md5("password").hexdigest()
+
+// ✅ SECURE: Using bcrypt
+import bcrypt
+hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+
+// ❌ VULNERABLE: Transmitting sensitive data over HTTP
+GET http://example.com/user/profile?ssn=123-45-6789
+
+// ✅ SECURE: HTTPS with TLS
+GET https://example.com/user/profile  (SSN in body, encrypted)</code>
+                </div>
+                <div class="warning">
+                    <strong>⚠️ Common Mistakes:</strong>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Using MD5, SHA1 untuk password hashing</li>
+                        <li>Not hashing passwords at all</li>
+                        <li>Weak encryption (ECB mode, small key size)</li>
+                        <li>Exposing sensitive data in logs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="vuln-card">
+                <h3>3️⃣ Injection Vulnerabilities</h3>
+                <p><strong>Deskripsi:</strong> User input digunakan dalam queries/commands tanpa proper sanitization.</p>
+                <div class="code-block">
+                    <button class="copy-btn">Copy</button>
+                    <code>// ❌ VULNERABLE: SQL Injection
+username = request.args.get('user')
+query = f"SELECT * FROM users WHERE username='{username}'"
+# Input: ' OR '1'='1
+# Query becomes: SELECT * FROM users WHERE username='' OR '1'='1'
+
+// ✅ SECURE: Parameterized Query
+query = "SELECT * FROM users WHERE username=?"
+cursor.execute(query, (username,))
+
+// ❌ VULNERABLE: Command Injection
+domain = request.args.get('domain')
+os.system(f"ping {domain}")
+# Input: example.com; rm -rf /
+# Result: Executes TWO commands!
+
+// ✅ SECURE: Use subprocess dengan array
+import subprocess
+subprocess.run(["ping", "-c", "1", domain])
+
+// ❌ VULNERABLE: LDAP Injection
+filter = f"(&(uid={username})(password={password}))"
+# Input: admin*)(&(uid=*
+# Filter: (&(uid=admin*)(&(uid=*)(password=*))</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- MITIGATION STRATEGIES -->
+        <section class="section">
+            <h2>🛡️ Mitigation Strategies</h2>
+            <div class="vuln-card">
+                <h3>General Security Best Practices:</h3>
+                <ul style="margin: 15px 0 15px 20px; list-style: none;">
+                    <li>✅ Input validation & output encoding</li>
+                    <li>✅ Use parameterized queries/prepared statements</li>
+                    <li>✅ Implement strong authentication & authorization</li>
+                    <li>✅ Use HTTPS/TLS for all communications</li>
+                    <li>✅ Regular security testing & code reviews</li>
+                    <li>✅ Keep dependencies updated</li>
+                    <li>✅ Implement proper logging & monitoring</li>
+                    <li>✅ Use security headers (CSP, HSTS, X-Frame-Options)</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Ethical Hacker Roadmap | OWASP Top 10</p>
+            <p><a href="index.html" style="color: white; text-decoration: underline;">← Back to Home</a></p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const code = this.nextElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                this.textContent = 'Copied!';
+                setTimeout(() => this.textContent = 'Copy', 2000);
+            });
+        });
+    </script>
+</body>
+</html>

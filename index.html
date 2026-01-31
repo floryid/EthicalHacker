@@ -146,6 +146,24 @@
             border-radius: 20px;
             font-size: 0.85em;
             margin: 5px 5px 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tool-badge:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            border-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .tool-badge a {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
         }
 
         .payload-container {
@@ -393,6 +411,36 @@
             display: block;
             animation: fadeIn 0.3s ease-out;
         }
+
+        /* Navigation Menu Styles */
+        .main-menu {
+            margin-top: 20px;
+        }
+
+        .main-menu ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 2px solid transparent;
+        }
+
+        .main-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -400,6 +448,19 @@
         <header>
             <h1>🛡️ Ethical Hacker Roadmap</h1>
             <p>Panduan Lengkap & Komprehensif untuk Menjadi Ethical Hacker Profesional</p>
+            
+            <!-- Navigation Menu -->
+            <nav class="main-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="osi-layer.html">OSI Layer</a></li>
+                    <li><a href="tools-ethical-hacking.html">Tools</a></li>
+                    <li><a href="owasp-top10.html">OWASP Top 10</a></li>
+                    <li><a href="methodology.html">Methodology</a></li>
+                    <li><a href="network-security.html">Network Security</a></li>
+                    <li><a href="payloads-advanced.html">Advanced Payloads</a></li>
+                </ul>
+            </nav>
         </header>
 
         <!-- ROADMAP SECTION -->
